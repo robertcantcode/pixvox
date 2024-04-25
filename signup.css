@@ -1,0 +1,80 @@
+body,  html{
+  margin: 0;
+  font-family: verdana;
+	background-color: #7abcf3;
+}
+
+.nav {
+  background-color: rgba(0, 0, 0, 0.3); /* Adjust the last value (0.8) to set the opacity level */
+  overflow: hidden;
+  height: 66px;
+  top: 0;
+  position: fixed;
+  width: 100%;
+}
+
+.nav a {
+  text-decoration: none;
+  font-size: 20px;
+  color: white;
+  padding: 3px;
+  margin: 4px;
+  vertical-align: center; /* Align the content vertically */
+}
+
+.nav img {
+  max-width: auto;
+  vertical-align: middle; /* Align the content vertically */
+	margin-left: 60px;
+	margin-top: 13px;
+	width: 50px;
+}
+
+footer {
+  font-family: verdana;
+  background-color: #ececec;
+  color: black;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+footer a {
+	color: black;
+}
+
+footer * {
+  background-color: inherit;
+}
+
+.signform {
+  border: 0px solid #000000;
+	background-color: rgba(255, 255, 255, 0.8);
+  height: 300px;
+  width: 380px;
+  text-align: center;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signform input[type="text"], input[type="password"] {
+	background-color: white;
+	border: 1px solid #e3e3e3;
+	border-radius: 3px;
+	padding: 10px 22px;
+	text-align: left;
+	margin: 2px;
+	font-size: 15px;
+}
+
+.signform button[type="submit"] {
+	margin-top: 10px;
+	color: white;
+	background-color: #02b757;
+	border: 0px;
+	border-radius: 3px;
+	padding: 10px 22px;
+	font-size: 18px;
+}

@@ -1,0 +1,52 @@
+body {
+    margin: 0;
+    font-family: verdana;
+}
+
+.nav {
+  background-color: rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  height: 40px;
+  top: 0;
+  position: fixed;
+  width: 100%;
+}
+
+.nav a {
+  text-decoration: none;
+  font-size: 20px;
+  color: white;
+  padding: 3px;
+  margin: 4px;
+  vertical-align: middle; /* Align the content vertically */
+}
+
+.nav img {
+  max-width: auto;
+  vertical-align: middle; /* Align the content vertically */
+	margin-left: 16px;
+}
+
+footer {
+  font-family: verdana;
+  background-color: #ececec;
+  color: black;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+footer a {
+	color: black;
+}
+
+footer * {
+  background-color: inherit;
+}
+
+button {
+	background-color: #7cf172;
+	border: 0px solid #7cf172;
+	border-radius: 5px;
+	padding: 5px 12px;
+}
