@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ball Game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+        #game-area {
+            position: relative;
+            width: 80vw;
+            height: 80vh;
+            border: 2px solid #000;
+            background-color: #fff;
+        }
+        #center-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            transform: translate(-50%, -50%);
+        }
+        .ball {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: blue;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-area">
+        <div id="center-box"></div>
+    </div>
+
+    <script>
+        const gameArea = document.getElementById('game-area');
+        const centerBox = document.getElementById('center-box');
+        let ballSpeed = 2;
+        let spawnInterval = 2000;
+
+        function getRandomPosition() {
+            const areaWidth = gameArea.clientWidth;
+            const areaHeight = gameArea.clientHeight;
+            const edge = Math.floor(Math.random() * 4);
+            let x, y;
+
+            if (edge === 0) { // Top
+                x = Math.random() * areaWidth;
+                y = 0;
+            } else if (edge === 1) { // Right
+                x = areaWidth;
+                y = Math.random() * areaHeight;
+            } else if (edge === 2) { // Bottom
+                x = Math.random() * areaWidth;
+                y = areaHeight;
+            } else { // Left
+                x = 0;
+                y = Math.random() * areaHeight;
+            }
+
+            return { x, y };
+        }
+
+        function createBall() {
+            const ball = document.createElement('div');
+            ball.classList.add('ball');
+            const { x, y } = getRandomPosition();
+            ball.style.left = `${x}px`;
+            ball.style.top = `${y}px`;
+
+            gameArea.appendChild(ball);
+
+            ball.addEventListener('click', () => {
+                ball.remove();
+            });
+
+            moveBall(ball);
+        }
+
+        function moveBall(ball) {
+            const centerX = centerBox.offsetLeft + centerBox.offsetWidth / 2;
+            const centerY = centerBox.offsetTop + centerBox.offsetHeight / 2;
+
+            const ballInterval = setInterval(() => {
+                const ballX = ball.offsetLeft + ball.offsetWidth / 2;
+                const ballY = ball.offsetTop + ball.offsetHeight / 2;
+                const angle = Math.atan2(centerY - ballY, centerX - ballX);
+                const dx = Math.cos(angle) * ballSpeed;
+                const dy = Math.sin(angle) * ballSpeed;
+
+                ball.style.left = `${ball.offsetLeft + dx}px`;
+                ball.style.top = `${ball.offsetTop + dy}px`;
+
+                if (Math.hypot(centerX - ballX, centerY - ballY) < 25) {
+                    alert('Game Over!');
+                    clearInterval(ballInterval);
+                    window.location.reload();
+                }
+            }, 16);
+        }
+
+        function startGame() {
+            setInterval(() => {
+                createBall();
+                ballSpeed += 0.1;
+                spawnInterval *= 0.95;
+            }, spawnInterval);
+        }
+
+        startGame();
+    </script>
+</body>
+</html>

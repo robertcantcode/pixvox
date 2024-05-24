@@ -1,0 +1,109 @@
+body, html {
+	margin: 3px;
+	font-family: verdana;
+}
+
+.main-container {
+	background-color: rgba(0, 0, 0, 0.8);
+	border: solid black 2px;
+	width: 70%;
+	color: white;
+}
+
+.main-container a {
+	color: white
+}
+
+.iconMain {
+	height: 100px;
+}
+
+body a {
+	font-size: 18px;
+}
+
+.frame-1 {
+	border: solid black 2px;
+}
+
+.btn {
+	border: solid black 2px;
+	font-size: 14px;
+	background-color: #a9ff91;
+	cursor: pointer;
+
+}
+
+.navbar {
+	background-color: #7a7e79;
+	overflow: hidden;
+	color: white;
+}
+
+.navbar a {
+	text-decoration: none;
+	padding: 15px;
+	font-size: 20px;
+}
+
+.navbar a:hover {
+	background-color: #555754;
+}
+
+.signup select {
+	background-color: #252424;
+	border: solid black 1px;
+	color: white;
+	font-size: 16px;
+	width: 10%;
+}
+
+.container input[type="password"] {
+	background-color: #252424;
+	border: solid black 1px;
+	color: white;
+	font-size: 16px;
+	width: 35%;
+}
+
+.container input[type="email"] {
+	background-color: #252424;
+	border: solid black 1px;
+	color: white;
+	font-size: 16px;
+	width: 35%;
+}
+
+.container input[type="text"] {
+	background-color: #252424;
+	border: solid black 1px;
+	color: white;
+	font-size: 16px;
+	width: 35%;
+}
+
+.container button[type="submit"] {
+	background-color: #6eed24;
+	border: solid black 1px;
+	width: 10%;
+	font-size: 19px;
+}
+
+.submit {
+	background: linear-gradient(#66ff10, #0dde08);
+	border: solid black 1px;
+	color: black;
+	font-size: 16px;
+	width: 18%;
+}
+
+.btn {
+	background-color: #6eed24;
+	border: solid black 1px;
+	width: 15%;
+	font-size: 15px;
+}
+
+.error {
+	color: red;
+}
