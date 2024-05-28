@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PixVox - Banned</title>
+    <meta name="Description" content="Its fun at guess well.">
+    <link rel="stylesheet" href="main.css">
+    <link rel="icon" href="pixfav.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+   <center>
+    <img src="icon.png" alt="icon" class="iconMain">
+    <div class="main-container">
+        <div class="main-frame">
+            <br>
+            <a style="color: #ff9217; font-size: 36px;">PixVox</a><br>
+            <a>Banned!</a><br>
+            <br>
+            <a>Your account has been banned!</a><br>
+            <a>You will return after <span id="seconds"></span> seconds.</a><br>
+            <br>
+        </div>
+        <div class="footer">
+            <a>Its fun</a><br>
+            <br>
+        </div>
+    </div>
+   </center>
+   <script>
+     document.addEventListener('DOMContentLoaded', () => {
+       const secondsSpan = document.getElementById('seconds');
+       const storedAccount = JSON.parse(localStorage.getItem('account'));
+       const banEndTimeKey = `banEndTime_${storedAccount.username}`;
+       const banEndTime = parseInt(localStorage.getItem(banEndTimeKey), 10);
+
+       if (storedAccount && banEndTime && !isNaN(banEndTime)) {
+         let remainingTime = banEndTime - Math.floor(Date.now() / 1000);
+
+         const interval = setInterval(() => {
+           remainingTime -= 1;
+           secondsSpan.textContent = remainingTime;
+
+           if (remainingTime <= 0) {
+             clearInterval(interval);
+             localStorage.removeItem('banDuration');
+             localStorage.removeItem(banEndTimeKey);
+             window.location.href = 'default.html'; // Redirect to homepage
+           }
+         }, 1000);
+       } else {
+         window.location.href = 'default.html'; // Redirect to homepage if no ban duration found
+       }
+     });
+   </script>
+</body>
+</html>

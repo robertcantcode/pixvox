@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Browse Projects - PixVox</title>
+    <meta name="Description" content="Browse projects on PixVox.">
+    <link rel="stylesheet" href="main.css">
+    <link rel="icon" href="pixfav.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <center>
+      <img src="icon.png" alt="icon" class="iconMain">
+      <div class="main-container">
+        <div class="navbar">
+          <a href="default.html">Home</a>
+          <a href="browse.html">Browse</a>
+          <a href="create.html">Create</a>
+        </div>
+        <div class="main-frame">
+          <br>
+          <a style="color: #ff9217; font-size: 36px;">PixVox</a><br>
+          <a>Browse Projects</a><br><br>
+          <div id="project-list" style="display: flex; flex-wrap: wrap;"></div>
+          <br><br>
+        </div>
+        <div class="footer">
+          <a href="guidelines.html">Guidelines</a><br><br>
+        </div>
+      </div>
+    </center>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const projectList = document.getElementById('project-list');
+        let projects = JSON.parse(localStorage.getItem('projects')) || [];
+
+        const renderProjects = () => {
+          projectList.innerHTML = '';
+          projects.forEach((project) => {
+            const projectButton = document.createElement('button');
+            projectButton.textContent = project.name;
+            projectButton.onclick = () => {
+              window.location.href = `project.html?projectId=${project.id}`;
+            };
+            projectButton.style.margin = '10px';
+            projectButton.style.border = 'solid black 1px';
+            projectButton.style.backgroundColor = '#91b9ff';
+            projectList.appendChild(projectButton);
+          });
+        };
+
+        renderProjects();
+      });
+    </script>
+  </body>
+</html>

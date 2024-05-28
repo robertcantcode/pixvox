@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Edit Project - PixVox</title>
+    <meta name="Description" content="Edit your project on PixVox.">
+    <link rel="stylesheet" href="main.css">
+    <link rel="icon" href="pixfav.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/isotope.min.css">
+    <style>
+      .CodeMirror {
+        border: 1px solid black;
+        font-size: 14px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <center>
+      <img src="icon.png" alt="icon" class="iconMain">
+      <div class="main-container">
+        <div class="navbar">
+          <a href="default.html">Home</a>
+          <a href="browse.html">Browse</a>
+          <a href="create.html">Create</a>
+        </div>
+        <div class="main-frame">
+          <br>
+          <a style="color: #ff9217; font-size: 36px;">PixVox</a><br>
+          <a>Edit Project</a><br><br>
+          <textarea id="project-code" name="code"></textarea><br><br>
+          <button class="save" id="save-project">Save Project</button>
+          <br><br>
+        </div>
+        <div class="footer">
+          <a href="guidelines.html">Guidelines</a><br><br>
+        </div>
+      </div>
+      </center>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/javascript/javascript.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectId = urlParams.get('projectId');
+        const storedAccount = JSON.parse(localStorage.getItem('account'));
+
+        if (storedAccount && storedAccount.username && projectId) {
+          let projects = JSON.parse(localStorage.getItem('projects')) || [];
+          const project = projects.find(p => p.id === projectId && p.owner === storedAccount.username);
+
+          if (project) {
+            const projectCodeTextarea = document.getElementById('project-code');
+            const editor = CodeMirror.fromTextArea(projectCodeTextarea, {
+            lineNumbers: true,
+            mode: 'javascript',
+            theme: 'isotope'
+          });
+
+            editor.setValue(project.html || '');
+            document.getElementById('save-project').onclick = () => {
+              project.html = editor.getValue();
+              localStorage.setItem('projects', JSON.stringify(projects));
+              alert('Project saved successfully!');
+          };
+          } else {
+            alert('Project not found!');
+            window.location.href = 'browse.html';
+          }
+
+          } else {
+            window.location.href = 'sign.html';
+          }
+        });
+    </script>
+    </body>
+</html>

@@ -31,7 +31,6 @@ body a {
 	font-size: 14px;
 	background-color: #a9ff91;
 	cursor: pointer;
-
 }
 
 .navbar {
@@ -58,7 +57,7 @@ body a {
 	width: 10%;
 }
 
-.container input[type="password"] {
+.main input[type="password"] {
 	background-color: #252424;
 	border: solid black 1px;
 	color: white;
@@ -66,27 +65,12 @@ body a {
 	width: 35%;
 }
 
-.container input[type="email"] {
+.main input[type="text"] {
 	background-color: #252424;
 	border: solid black 1px;
 	color: white;
 	font-size: 16px;
 	width: 35%;
-}
-
-.container input[type="text"] {
-	background-color: #252424;
-	border: solid black 1px;
-	color: white;
-	font-size: 16px;
-	width: 35%;
-}
-
-.container button[type="submit"] {
-	background-color: #6eed24;
-	border: solid black 1px;
-	width: 10%;
-	font-size: 19px;
 }
 
 .submit {
@@ -106,4 +90,28 @@ body a {
 
 .error {
 	color: red;
+}
+
+.err {
+	height: 130px;
+}
+
+.logout {
+	background: linear-gradient(#0e6fe8, #519eff);
+	border: solid black 1px;
+	color: black;
+	font-size: 16px;
+	width: 10%;
+}
+
+.createBtn {
+	background-color: #edd8d8;
+	border: solid black 1px;
+	font-size: 19px;
+}
+
+.save {
+	background-color: #50ec61;
+	border: solid black 1px;
+	font-size: 19px;
 }

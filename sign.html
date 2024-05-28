@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <title>PixVox - Sign Up</title>
+    <meta name="Description" content="Its fun at guess well.">
+    <link rel="stylesheet" href="main.css">
+    <link rel="icon" href="pixfav.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ </head>
+ <body>
+   <center>
+    <img src="icon.png" alt="icon" class="iconMain">
+    <div class="main-container">
+      <div class="main">
+        <br>
+        <a style="color: #ff9217; font-size: 36px;">PixVox</a><br>
+        <a>Create Account!</a><br>
+        <br>
+        <form id="createAccountForm" onsubmit="saveAccount(event)">
+          <input type="text" id="username" name="username" placeholder="Username" autocomplete="off"><br><br>
+          <input type="password" id="password" name="password" placeholder="Password"><br><br>
+          <input type="password" id="confirm" name="confirm" placeholder="Confirm Password"><br><br>
+          <div class="error" id="error"></div><br>
+          <button type="submit" id="submit" class="submit">Create Account</button>
+					<br><br>
+					<a href="log.html">Login here!</a>
+					<br><br>
+        </form>
+      </div>
+      <div class="footer">
+        <a>Its fun</a><br>
+        <br>
+      </div>
+     </div>
+   </center>
+   <script>
+     function saveAccount(event) {
+       event.preventDefault();
+
+       const username = document.getElementById('username').value;
+       const password = document.getElementById('password').value;
+       const confirmPassword = document.getElementById('confirm').value;
+       const errorMessage = document.getElementById('error');
+
+       errorMessage.textContent = '';
+
+       const slurs = ['fuck', 'cunt', 'shit', 'sex', 'nigger', 'dick', 'cock', 'pussy', 'anal', 'anus'];
+       const special = [' ', '@', '#', '$', '%', '^', '&', '*', '(', ')', '\\', '|', '/', '>', '<', '.', ',', ':', ';', '"', "'", '?', '+', '_'];
+
+       if (!username || !password || !confirmPassword) {
+         errorMessage.textContent = 'All inputs are required';
+         errorMessage.style.color = 'red';
+         return;
+       }
+
+       if (username.length < 3 || username.length > 20) {
+         errorMessage.textContent = 'Username must be 3 - 20 characters';
+         errorMessage.style.color = 'red';
+         return;
+       }
+
+       if (slurs.some(slur => username.toLowerCase().includes(slur))) {
+         errorMessage.textContent = 'Username cannot contain slurs';
+         errorMessage.style.color = 'red';
+         return;
+       }
+
+       if (special.some(char => username.includes(char))) {
+         errorMessage.textContent = 'Username cannot contain special characters';
+         errorMessage.style.color = 'red';
+         return;
+       }
+
+       if (password !== confirmPassword) {
+         errorMessage.textContent = 'Passwords do not match';
+         errorMessage.style.color = 'red';
+         return;
+       }
+
+       let accounts = JSON.parse(localStorage.getItem('accounts')) || [];
+       if (accounts.some(account => account.username === username)) {
+         errorMessage.textContent = 'Username already exists';
+         errorMessage.style.color = 'red';
+         return;
+       }
+
+       const newAccount = {
+         username: username,
+         password: password,
+         loggedIn: true
+       };
+
+       accounts.push(newAccount);
+       localStorage.setItem('accounts', JSON.stringify(accounts));
+       localStorage.setItem('account', JSON.stringify(newAccount));
+
+       window.location.href = 'default.html'; // Redirect to homepage
+     }
+   </script>
+ </body>
+</html>

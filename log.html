@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <title>PixVox - Login</title>
+    <meta name="Description" content="Its fun at guess well.">
+    <link rel="stylesheet" href="main.css">
+    <link rel="icon" href="pixfav.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ </head>
+ <body>
+   <center>
+    <img src="icon.png" alt="icon" class="iconMain">
+    <div class="main-container">
+      <div class="main">
+        <br>
+        <a style="color: #ff9217; font-size: 36px;">PixVox</a><br>
+        <a>Login to Account!</a><br>
+        <br>
+        <form id="loginForm" onsubmit="loginAccount(event)">
+          <input type="text" id="username" name="username" placeholder="Username" autocomplete="off"><br><br>
+          <input type="password" id="password" name="password" placeholder="Password"><br><br>
+          <div class="error" id="error"></div><br>
+          <button type="submit" id="login" class="submit">Login</button>
+					<br><br>
+          <a href="sign.html">Signup here!</a>
+					<br><br>
+        </form>
+      </div>
+      <div class="footer">
+        <a>Its fun</a><br>
+        <br>
+      </div>
+     </div>
+   </center>
+   <script>
+     function loginAccount(event) {
+       event.preventDefault();
+
+       const username = document.getElementById('username').value;
+       const password = document.getElementById('password').value;
+       const errorMessage = document.getElementById('error');
+
+       errorMessage.textContent = '';
+
+       const accounts = JSON.parse(localStorage.getItem('accounts')) || [];
+       const account = accounts.find(acc => acc.username === username && acc.password === password);
+
+       if (account) {
+         account.loggedIn = true;
+         localStorage.setItem('account', JSON.stringify(account));
+         window.location.href = 'default.html'; // Redirect to the default page
+       } else {
+         errorMessage.textContent = 'Account does not exist or incorrect password';
+         errorMessage.style.color = 'red';
+       }
+     }
+   </script>
+ </body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Project - PixVox</title>
+    <meta name="Description" content="View project on PixVox.">
+    <link rel="stylesheet" href="main.css">
+    <link rel="icon" href="pixfav.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <center>
+      <img src="icon.png" alt="icon" class="iconMain">
+      <div class="main-container">
+        <div class="navbar">
+          <a href="default.html">Home</a>
+          <a href="browse.html">Browse</a>
+          <a href="create.html">Create</a>
+        </div>
+        <div class="main-frame">
+          <br>
+          <a style="color: #ff9217; font-size: 36px;">PixVox</a><br>
+          <a>View Project</a><br><br>
+          <iframe id="project-iframe" width="640" height="360"></iframe><br><br>
+          <a id="project-owner"></a>
+          <br><br>
+        </div>
+        <div class="footer">
+          <a href="guidelines.html">Guidelines</a><br><br>
+        </div>
+      </div>
+    </center>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectId = urlParams.get('projectId');
+        let projects = JSON.parse(localStorage.getItem('projects')) || [];
+        const project = projects.find(p => p.id === projectId);
+
+        if (project) {
+          const projectIframe = document.getElementById('project-iframe');
+          const projectOwner = document.getElementById('project-owner');
+          projectIframe.srcdoc = project.html;
+          projectOwner.textContent = `Project by: ${project.owner}`;
+        } else {
+          alert('Project not found!');
+          window.location.href = 'browse.html';
+        }
+      });
+    </script>
+  </body>
+</html>

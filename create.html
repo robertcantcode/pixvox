@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create Project - PixVox</title>
+    <meta name="Description" content="Create your project on PixVox.">
+    <link rel="stylesheet" href="main.css">
+    <link rel="icon" href="pixfav.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <center>
+      <img src="icon.png" alt="icon" class="iconMain">
+      <div class="main-container">
+        <div class="navbar">
+          <a href="default.html">Home</a>
+          <a href="browse.html">Browse</a>
+          <a href="create.html">Create</a>
+        </div>
+        <div class="main-frame">
+          <br>
+          <a style="color: #ff9217; font-size: 36px;">PixVox</a><br>
+          <a>Create a New Project</a><br>
+          <br>
+          <button class="createBtn" id="make-project">Make Project</button>
+          <ul id="project-list"></ul>
+          <br><br>
+        </div>
+        <div class="footer">
+          <a href="guidelines.html">Guidelines</a><br><br>
+        </div>
+      </div>
+    </center>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const makeProjectButton = document.getElementById('make-project');
+        const projectList = document.getElementById('project-list');
+        const storedAccount = JSON.parse(localStorage.getItem('account'));
+
+        if (storedAccount && storedAccount.username) {
+          let projects = JSON.parse(localStorage.getItem('projects')) || [];
+          const renderProjects = () => {
+            projectList.innerHTML = '';
+            projects.forEach((project) => {
+              if (project.owner === storedAccount.username) {
+                const li = document.createElement('li');
+                li.textContent = project.name;
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Edit';
+                editButton.style.backgroundColor = '#3498db';
+                editButton.style.border = 'solid black 1px';
+                editButton.style.marginLeft = '3px';
+                editButton.style.color = 'white';
+                editButton.style.marginRight = '10px';
+                editButton.onclick = () => {
+                  window.location.href = `editor.html?projectId=${project.id}`;
+                };
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.style.backgroundColor = '#e74c3c';
+                deleteButton.style.border = 'solid black 1px';
+                deleteButton.style.color = 'white';
+                deleteButton.onclick = () => {
+                  projects = projects.filter(p => p.id !== project.id);
+                  localStorage.setItem('projects', JSON.stringify(projects));
+                  renderProjects();
+                };
+                li.appendChild(editButton);
+                li.appendChild(deleteButton);
+                projectList.appendChild(li);
+              }
+            });
+          };
+
+          renderProjects();
+
+          makeProjectButton.onclick = () => {
+            const projectName = prompt('Enter project name:');
+            if (projectName) {
+              const projectId = Math.random().toString(36).substr(2, 9);
+              projects.push({ id: projectId, name: projectName, code: '', owner: storedAccount.username });
+              localStorage.setItem('projects', JSON.stringify(projects));
+              renderProjects();
+            }
+          };
+        } else {
+          window.location.href = 'sign.html';
+        }
+      });
+    </script>
+  </body>
+</html>

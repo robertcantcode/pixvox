@@ -6,42 +6,88 @@
     <link rel="stylesheet" href="main.css">
     <link rel="icon" href="pixfav.png" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>
-        function toggleIframeSrc() {
-            const iframe = document.getElementById('contentFrame');
-            const currentSrc = iframe.src;
-            const newSrc = currentSrc.includes('project1.html') ? '404err.html' : 'project1.html';
-            iframe.src = newSrc;
-        }
-    </script>
 </head>
 <body>
-    <center>
-        <img src="icon.png" alt="icon" class="iconMain">
-        <div class="main-container">
-            <div class="navbar">
-                <a href="#">Home</a>
-                <a href="404err.html">Browse</a>
-                <a href="404err.html">Create</a>
-            </div>
-            <div class="main-frame">
-                <br>
-                <a style="color: #ff9217; font-size: 36px;">PixVox</a><br>
-                <a>Early Access!</a><br>
-                <br>
-                <br>
-                <iframe id="contentFrame" src="project1.html" width="640" height="360" frameborder="0" allowfullscreen></iframe>
-                <br>
-                <br>
-                <button onclick="toggleIframeSrc()">Change Game</button>
-                <br>
-                <br>
-            </div>
-            <div class="footer">
-                <a>Its fun I guess!</a><br>
-                <br>
-            </div>
+   <center>
+    <img src="icon.png" alt="icon" class="iconMain">
+    <div class="main-container">
+        <div class="navbar">
+            <a href="default.html" id="home-link">Home</a>
+            <a href="browse.html" id="browse-link">Browse</a>
+            <a href="create.html" id="create-link">Create</a>
         </div>
-    </center>
+        <div class="main-frame">
+            <br>
+            <a style="color: #ff9217; font-size: 36px;">PixVox</a><br>
+            <a>Welcome, <span id="user"></span></a><br>
+            <br>
+            <br>
+        </div>
+        <div class="footer">
+            <a href="guidelines.html">Guidelines</a><br>
+            <br>
+            <button class="logout" id="logout-button">Logout</button>
+					  <br><br>
+        </div>
+    </div>
+   </center>
+   <script>
+     document.addEventListener('DOMContentLoaded', () => {
+       const userSpan = document.getElementById('user');
+       const browseLink = document.getElementById('browse-link');
+       const createLink = document.getElementById('create-link');
+       const logoutButton = document.getElementById('logout-button');
+       const storedAccount = JSON.parse(localStorage.getItem('account'));
+
+       const bannedUsers = [
+         { username: '1234566543', banDuration: 100000000 }// Add other banned users here
+       ];
+
+       if (storedAccount && storedAccount.username) {
+         const bannedUser = bannedUsers.find(user => user.username === storedAccount.username);
+         if (bannedUser) {
+           const currentTime = Math.floor(Date.now() / 1000);
+           const banEndTimeKey = `banEndTime_${storedAccount.username}`;
+           let banEndTime = localStorage.getItem(banEndTimeKey);
+
+           if (!banEndTime) {
+             banEndTime = currentTime + bannedUser.banDuration;
+             localStorage.setItem(banEndTimeKey, banEndTime);
+           } else {
+             banEndTime = parseInt(banEndTime, 10);
+           }
+
+           if (currentTime < banEndTime) {
+             localStorage.setItem('banDuration', bannedUser.banDuration);
+             window.location.href = 'ban1.html';
+           } else {
+             localStorage.removeItem(banEndTimeKey);
+           }
+         }
+
+         userSpan.textContent = storedAccount.username;
+         logoutButton.textContent = 'Logout';
+         logoutButton.onclick = () => {
+           storedAccount.loggedIn = false;
+           localStorage.removeItem('account');
+           localStorage.removeItem(`banEndTime_${storedAccount.username}`);
+           location.reload(); // Reload the page to reflect changes
+         };
+       } else {
+         const randomPlayerNumber = Math.floor(100 + Math.random() * 900);
+         userSpan.textContent = `Player ${randomPlayerNumber}`;
+         browseLink.href = "#";
+         browseLink.style.pointerEvents = "none";
+         browseLink.style.color = "gray";
+         createLink.href = "#";
+         createLink.style.pointerEvents = "none";
+         createLink.style.color = "gray";
+         logoutButton.textContent = 'Sign Up';
+         logoutButton.onclick = () => {
+           window.location.href = 'sign.html'; // Redirect to the signup page
+         };
+       }
+     });
+   </script>
 </body>
 </html>
