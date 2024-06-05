@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebRTC Peer-to-Peer Chat</title>
+</head>
+<body>
+    <h1>WebRTC Chat</h1>
+    <div>
+        <input type="text" id="messageInput" placeholder="Type your message here">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <div>
+        <h2>Chat</h2>
+        <ul id="messagesList"></ul>
+    </div>
+
+    <script>
+        let localConnection;
+        let remoteConnection;
+        let sendChannel;
+        let receiveChannel;
+
+        const messageInput = document.getElementById('messageInput');
+        const messagesList = document.getElementById('messagesList');
+
+        function setupPeerConnection() {
+            const configuration = {
+                iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+            };
+
+            localConnection = new RTCPeerConnection(configuration);
+            sendChannel = localConnection.createDataChannel('sendChannel');
+
+            sendChannel.onopen = handleSendChannelStatusChange;
+            sendChannel.onclose = handleSendChannelStatusChange;
+
+            localConnection.onicecandidate = e => {
+                if (e.candidate) {
+                    remoteConnection.addIceCandidate(e.candidate);
+                }
+            };
+
+            remoteConnection = new RTCPeerConnection(configuration);
+
+            remoteConnection.ondatachannel = receiveChannelCallback;
+
+            remoteConnection.onicecandidate = e => {
+                if (e.candidate) {
+                    localConnection.addIceCandidate(e.candidate);
+                }
+            };
+
+            localConnection.createOffer().then(offer => {
+                localConnection.setLocalDescription(offer);
+                remoteConnection.setRemoteDescription(offer);
+                return remoteConnection.createAnswer();
+            }).then(answer => {
+                remoteConnection.setLocalDescription(answer);
+                localConnection.setRemoteDescription(answer);
+            }).catch(handleError);
+        }
+
+        function receiveChannelCallback(event) {
+            receiveChannel = event.channel;
+            receiveChannel.onmessage = handleMessage;
+            receiveChannel.onopen = handleReceiveChannelStatusChange;
+            receiveChannel.onclose = handleReceiveChannelStatusChange;
+        }
+
+        function handleSendChannelStatusChange(event) {
+            if (sendChannel) {
+                console.log('Send channel status: ' + sendChannel.readyState);
+            }
+        }
+
+        function handleReceiveChannelStatusChange(event) {
+            if (receiveChannel) {
+                console.log('Receive channel status: ' + receiveChannel.readyState);
+            }
+        }
+
+        function handleMessage(event) {
+            const message = event.data;
+            const listItem = document.createElement('li');
+            listItem.textContent = message;
+            messagesList.appendChild(listItem);
+        }
+
+        function handleError(error) {
+            console.error('Error: ', error);
+        }
+
+        function sendMessage() {
+            const message = messageInput.value;
+            sendChannel.send(message);
+            messageInput.value = '';
+        }
+
+        // Initialize Peer Connection
+        setupPeerConnection();
+    </script>
+</body>
+</html>
